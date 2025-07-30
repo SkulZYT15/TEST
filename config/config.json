@@ -1,0 +1,236 @@
+{
+  "server": {
+    "http_port": ":8083",
+    "ice_servers": ["stun:stun.l.google.com:19302"],
+    "webrtc_port_max": 61000,
+    "webrtc_port_min": 60000
+  },
+  "streams": {
+    "1": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/102"
+    },
+    "2": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/202"
+    },
+    "3": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/302"
+    },
+    "4": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/401"
+    },
+    "5": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/502"
+    },
+    "6": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/602"
+    },
+    "7": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/702"
+    },
+    "8": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/802"
+    },
+    "9": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/902"
+    },
+    "10": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1002"
+    },
+    "11": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1102"
+    },
+    "12": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1202"
+    },
+    "13": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1302"
+    },
+    "14": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1402"
+    },
+    "15": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1502"
+    },
+    "16": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1602"
+    },
+    "17": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1702"
+    },
+    "18": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1802"
+    },
+    "19": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1902"
+    },
+    "20": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2002"
+    },
+    "21": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2102"
+    },
+    "22": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2202"
+    },
+    "23": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2302"
+    },
+    "24": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2402"
+    },
+    "25": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2502"
+    },
+    "26": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2602"
+    },
+    "27": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2702"
+    },
+    "28": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2802"
+    },
+    "29": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/2902"
+    },
+    "30": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/3002"
+    },
+    "31": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/3102"
+    },
+    "32": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/3201"
+    },
+    "33": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/102"
+    },
+    "34": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/402"
+    },
+    "35": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/502"
+    },
+    "36": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/602"
+    },
+    "37": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/702"
+    },
+    "38": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/302"
+    },
+    "39": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/202"
+    },
+    "40": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/802"
+    },
+    "41": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.190:554/Streaming/Channels/902"
+    },
+    "42": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/3102"
+    },
+
+    "99": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1"
+    },
+    "100": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1"
+    },
+    "101": {
+      "on_demand": true,
+      "disable_audio": true,
+      "url": "rtsp://admin:Informatika20@103.106.112.142:554/Streaming/Channels/1"
+    }
+  }
+}

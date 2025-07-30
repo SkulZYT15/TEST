@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CCTV Demo - Deteksi kendaraan dengan AI</title>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gradient-to-br from-primary to-secondary min-h-screen">
+        <div class="container mx-auto p-6 max-w-7xl">
+            <!-- Header -->
+            <div class="hero text-center mb-8">
+                <div class="hero-content">
+                    <div class="max-w-md">
+                        <h1 class="text-5xl font-bold text-white drop-shadow-lg">
+                            🚗 CCTV Kota Metro
+                        </h1>
+                        <p class="py-6 text-xl text-white/90">Real-time monitoring dengan deteksi kendaraan menggunakan AI + ID Tracking</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics Panel -->
+            <div class="card bg-base-100 shadow-xl mb-8">
+                <div class="card-body">
+                    <h2 class="card-title justify-center text-2xl mb-6">📊 Statistik Real-time</h2>
+                    <div class="stats stats-vertical lg:stats-horizontal shadow" id="stats-grid">
+                        <div class="stat">
+                            <div class="stat-title">Total Channel</div>
+                            <div class="stat-value text-primary" id="totalChannels">4</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-title">Channel Online</div>
+                            <div class="stat-value text-success" id="activeStreams">0</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-title">AI Model</div>
+                            <div class="stat-value text-info">YOLO11n</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Video Grid -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8" id="video-grid"></div>
+            
+            <!-- Footer -->
+            <footer class="footer footer-center p-6 text-white">
+                <div>
+                    <p class="text-lg">© 2025 CCTV kota metro | Powered by SkulZeet + YOLO11n</p>
+                </div>
+            </footer>
+        </div>
+
+        <script>
+            // Configuration
+            const CONFIG = {
+                channels: [1, 2, 3, 4],
+                updateInterval: 5000,
+                hlsConfig: {
+                    debug: false,
+                    enableWorker: true,
+                    lowLatencyMode: true,
+                    backBufferLength: 90
+                }
+            };
+
+            // State management
+            const state = {
+                hlsInstances: {}
+            };
+
+            // Utility functions
+            const utils = {
+                updateElement: (id, content) => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = content;
+                }
+            };
+
+            // DOM manipulation
+            const dom = {
+                createVideoCard: (channelId) => `
+                    <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                        <div class="card-body">
+                            <h2 class="card-title justify-center">📹 Channel ${channelId}</h2>
+                            <div class="relative bg-black rounded-lg overflow-hidden aspect-video">
+                                <video class="w-full h-full object-cover" id="video-${channelId}" controls muted>
+                                    <p class="text-white text-center">Browser Anda tidak mendukung video HTML5.</p>
+                                </video>
+                                <div class="loading-overlay absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white hidden" id="loading-${channelId}">
+                                    <span class="loading loading-spinner loading-lg mb-4"></span>
+                                    <p class="text-lg">Memuat stream...</p>
+                                </div>
+                            </div>
+                            <div class="card-actions justify-center gap-3 mt-4">
+                                <button onclick="streamManager.start(${channelId})" class="btn btn-primary">
+                                    ▶️ Mulai
+                                </button>
+                                <button onclick="streamManager.stop(${channelId})" class="btn btn-error">
+                                    ⏹️ Stop
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                
+                showLoading: (channelId, show = true) => {
+                    const loading = document.getElementById(`loading-${channelId}`);
+                    if (loading) loading.classList.toggle('hidden', !show);
+                },
+                
+                showError: (channelId, message) => {
+                    const container = document.querySelector(`#video-${channelId}`).parentElement;
+                    let errorDiv = container.querySelector('.error-message');
+                    
+                    if (!errorDiv) {
+                        errorDiv = document.createElement('div');
+                        errorDiv.className = 'error-message alert alert-error absolute top-0 left-0 w-full rounded-t-lg z-10';
+                        errorDiv.innerHTML = `<span>${message}</span>`;
+                        container.appendChild(errorDiv);
+                    } else {
+                        errorDiv.querySelector('span').textContent = message;
+                    }
+                    
+                    setTimeout(() => errorDiv.remove(), 5000);
+                }
+            };
+
+            // Stream management
+            const streamManager = {
+                start: async (channelId) => {
+                    dom.showLoading(channelId, true);
+                    
+                    const video = document.getElementById(`video-${channelId}`);
+                    const hlsUrl = `/stream/${channelId}`;
+                    
+                    try {
+                        // Cleanup existing instance
+                        if (state.hlsInstances[channelId]) {
+                            state.hlsInstances[channelId].destroy();
+                            delete state.hlsInstances[channelId];
+                        }
+                        
+                        if (Hls.isSupported()) {
+                            const hls = new Hls(CONFIG.hlsConfig);
+                            hls.loadSource(hlsUrl);
+                            hls.attachMedia(video);
+                            
+                            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                                console.log(`Stream ${channelId} ready`);
+                                dom.showLoading(channelId, false);
+                                video.play().catch(e => console.log('Autoplay prevented:', e));
+                            });
+                            
+                            hls.on(Hls.Events.ERROR, (event, data) => {
+                                console.error(`Stream ${channelId} error:`, data);
+                                dom.showLoading(channelId, false);
+                                
+                                if (data.fatal) {
+                                    const errorHandlers = {
+                                        [Hls.ErrorTypes.NETWORK_ERROR]: () => {
+                                            dom.showError(channelId, 'Network error. Retrying...');
+                                            setTimeout(() => hls.startLoad(), 3000);
+                                        },
+                                        [Hls.ErrorTypes.MEDIA_ERROR]: () => {
+                                            dom.showError(channelId, 'Media error. Retrying...');
+                                            hls.recoverMediaError();
+                                        }
+                                    };
+                                    
+                                    const handler = errorHandlers[data.type];
+                                    if (handler) {
+                                        handler();
+                                    } else {
+                                        dom.showError(channelId, 'Fatal error occurred');
+                                        hls.destroy();
+                                        delete state.hlsInstances[channelId];
+                                    }
+                                }
+                            });
+                            
+                            state.hlsInstances[channelId] = hls;
+                        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                            // Safari support
+                            video.src = hlsUrl;
+                            video.onloadedmetadata = () => dom.showLoading(channelId, false);
+                            video.onerror = () => {
+                                dom.showLoading(channelId, false);
+                                dom.showError(channelId, 'Error loading stream');
+                            };
+                        } else {
+                            throw new Error('HLS not supported');
+                        }
+                    } catch (error) {
+                        console.error(`Failed to start stream ${channelId}:`, error);
+                        dom.showLoading(channelId, false);
+                        dom.showError(channelId, error.message);
+                    }
+                },
+                
+                stop: async (channelId) => {
+                    try {
+                        // Cleanup HLS
+                        if (state.hlsInstances[channelId]) {
+                            state.hlsInstances[channelId].destroy();
+                            delete state.hlsInstances[channelId];
+                        }
+                        
+                        // Stop video
+                        const video = document.getElementById(`video-${channelId}`);
+                        video.pause();
+                        video.src = '';
+                        video.load();
+                        
+                        dom.showLoading(channelId, false);
+                        
+                        // Notify server
+                        fetch(`/stop/${channelId}`).catch(e => console.warn(`Server stop failed for ${channelId}:`, e));
+                        
+                    } catch (error) {
+                        console.error(`Error stopping stream ${channelId}:`, error);
+                    }
+                }
+            };
+
+            // Stats management
+            const statsManager = {
+                update: () => {
+                    // Update active streams count based on current HLS instances
+                    utils.updateElement('activeStreams', Object.keys(state.hlsInstances).length);
+                }
+            };
+
+            // Application initialization
+            const app = {
+                init: () => {
+                    console.log('CCTV Demo initialized');
+                    
+                    // Generate video cards
+                    const videoGrid = document.getElementById('video-grid');
+                    videoGrid.innerHTML = CONFIG.channels.map(dom.createVideoCard).join('');
+                    
+                    // Initialize all loading states
+                    CONFIG.channels.forEach(channelId => dom.showLoading(channelId, false));
+                    
+                    // Start intervals
+                    setInterval(statsManager.update, CONFIG.updateInterval);
+                    statsManager.update();
+                },
+                
+                cleanup: () => {
+                    Object.keys(state.hlsInstances).forEach(channelId => {
+                        streamManager.stop(parseInt(channelId));
+                    });
+                }
+            };
+
+            // Event listeners
+            document.addEventListener('DOMContentLoaded', app.init);
+            window.addEventListener('beforeunload', app.cleanup);
+        </script>
+    </body>
+</html>
